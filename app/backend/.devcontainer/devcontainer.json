@@ -1,0 +1,7 @@
+{
+    "name": "FullStack Development",
+    "dockerComposeFile": "../../../docker-compose.yml",
+    "service": "backend-app",
+    "workspaceFolder": "/workspace"
+}
+
