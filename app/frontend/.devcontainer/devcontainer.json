@@ -1,6 +1,6 @@
 {
     "name": "FullStack Development",
-    "dockerComposeFile": "../../../docker-compose.yml",
+    "dockerComposeFile": "compose_devcontainer.yaml",
     "service": "frontend-app",
     "workspaceFolder": "/workspace"
 }

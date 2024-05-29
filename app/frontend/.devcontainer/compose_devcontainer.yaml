@@ -1,0 +1,38 @@
+services:
+  frontend-app:
+    container_name: frontend-app
+    image: fullstack_front
+    volumes:
+      - ../../..:/workspace:cached
+    tty: true
+
+  backend-app:
+    container_name: backend-app
+    image: fullstack_back
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 8000:8000
+    command: 'python manage.py runserver --settings config.settings.development 0.0.0.0:8000'
+
+  db:
+    container_name: db
+    image: mysql:8
+    command:
+      --collation-server=utf8mb4_0900_bin
+      --transaction-isolation=READ-COMMITTED
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: app
+      MYSQL_USER: root1
+      MYSQL_PASSWORD: password1
+      TZ: Asia/Tokyo
+    ports:
+      - 53306:3306
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+

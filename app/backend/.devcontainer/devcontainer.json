@@ -1,7 +1,22 @@
 {
     "name": "FullStack Development",
-    "dockerComposeFile": "../../../docker-compose.yml",
+    "dockerComposeFile": ["compose_devcontainer.yaml"],
     "service": "backend-app",
-    "workspaceFolder": "/workspace"
+    "workspaceFolder": "/workspace",
+    "customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			// Set *default* container specific settings.json values on container create.
+			"settings": {
+                "pylint.args": [
+                    "--load-plugins",
+                    "pylint_django",
+                    "--django-settings-module",
+                    "config.settings.development"
+                ]
+            },
+			"extensions": [],
+		}
+}
 }
 
