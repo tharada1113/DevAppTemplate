@@ -31,8 +31,11 @@ services:
       TZ: Asia/Tokyo
     ports:
       - 53306:3306
+    volumes:
+      - db-compose-volume:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
-
+volumes:
+  db-compose-volume:

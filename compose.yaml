@@ -1,4 +1,31 @@
 services:
+  frontend-app:
+    container_name: frontend-app
+    build: ./app/frontend
+    image: fullstack_front
+    volumes:
+      - .:/workspace:cached
+      - ./app/frontend:/usr/src
+    tty: true
+    ports:
+      - 3000:3000
+    command: 'yarn dev'
+
+  backend-app:
+    container_name: backend-app
+    build: ./app/backend
+    image: fullstack_back
+    volumes:
+      - .:/workspace:cached
+      - ./app/backend:/usr/src
+    depends_on:
+      db:
+        condition: service_healthy
+    tty: true
+    ports:
+      - 8000:8000
+    command: 'python manage.py runserver --settings config.settings.development 0.0.0.0:8000'
+
   db:
     container_name: db
     image: mysql:8
@@ -14,30 +41,11 @@ services:
       TZ: Asia/Tokyo
     ports:
       - 53306:3306
+    volumes:
+      - db-compose-volume:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
-
-  frontend-app:
-    container_name: frontend-app
-    build: ./app/frontend
-    image: fullstack_front
-    volumes:
-      - .:/workspace:cached
-    tty: true
-
-  backend-app:
-    container_name: backend-app
-    build: ./app/backend
-    image: fullstack_back
-    volumes:
-      - .:/workspace:cached
-    depends_on:
-      db:
-        condition: service_healthy
-    tty: true
-    ports:
-      - 8000:8000
-    command: 'python manage.py runserver --settings config.settings.development 0.0.0.0:8000'
-
+volumes:
+  db-compose-volume:

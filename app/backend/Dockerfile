@@ -1,9 +1,7 @@
 FROM python:3.11
 
-RUN mkdir /code
-WORKDIR /code
-COPY requirements.lock /code/
+WORKDIR /usr/src
+COPY . /usr/src
 RUN pip3 install -r requirements.lock
-COPY . /code/
 
 
